@@ -1151,7 +1151,6 @@ struct packet_wis_end {
 #endif
 } __attribute__((packed));
 
-
 struct packet_party_leader_changed {
 	int16 PacketType;
 	uint32 prev_leader_aid;

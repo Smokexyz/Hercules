@@ -1325,6 +1325,14 @@ struct clif_interface {
 	void (*pCashShopReqTab) (int fd, struct map_session_data *sd);
 	void (*pCashShopSchedule) (int fd, struct map_session_data *sd);
 	void (*pCashShopBuy) (int fd, struct map_session_data *sd);
+	/* Cash Shop Sale [Smokexyz/Hercules] */
+	void (*pCashShopSaleOpen) (int fd, struct map_session_data *sd);
+	void (*pCashShopSaleClose) (int fd, struct map_session_data *sd);
+	void (*pCashShopSaleAdd) (int fd, struct map_session_data *sd);
+	void (*pCashShopSaleRemove) (int fd, struct map_session_data *sd);
+	void (*pCashShopSaleSearch) (int fd, struct map_session_data *sd);
+	void (*pCashShopSaleRefresh) (int fd, struct map_session_data *sd);
+	/* */
 	void (*pPartyTick) (int fd, struct map_session_data *sd);
 	void (*pGuildInvite2) (int fd, struct map_session_data *sd);
 	/* Group Search System Update */

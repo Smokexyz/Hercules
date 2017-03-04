@@ -17815,6 +17815,39 @@ void clif_parse_CashShopReqTab(int fd, struct map_session_data *sd)
 #endif
 }
 
+/**
+ * Cash Shop Sales [Smokexyz/Hercules]
+ */
+// Sale Open
+// Sale Close
+// Sale Add
+// Sale Remove
+// Sale Search
+void clif_parse_CashShopSaleSearch(int fd, struct map_session_data *sd) __attribute__((nonnull (2)));
+/* [Smokexyz/Hercules] */
+void clif_parse_CashShopSaleSearch(int fd, struct map_session_data *sd)
+{
+#if PACKETVER >= 20131223
+	char item_name[ITEM_NAME_LENGTH];
+	struct item_data *it = NULL;
+	int16 len = min(RFIFOW(fd,2),ITEM_NAME_LENGTH);
+	
+	nullpo_retv(sd);
+	
+	if (RFIFOL(fd, 4) != sd->status.account_id)
+		return;
+	
+	safestrncpy(item_name, RFIFOP(fd, 8), len);
+	
+	if ((it = itemdb->search_name(item_name)) == NULL) {
+		//clif->CashShopSaleSearchReply(sd, NULL); // Item was not found.
+		return;
+	}
+#endif
+}
+
+// Sale Refresh
+
 /* [Ind/Hercules] */
 void clif_maptypeproperty2(struct block_list *bl,enum send_target t)
 {
@@ -20065,6 +20098,13 @@ void clif_defaults(void) {
 	clif->pCashShopReqTab = clif_parse_CashShopReqTab;
 	clif->pCashShopSchedule = clif_parse_CashShopSchedule;
 	clif->pCashShopBuy = clif_parse_CashShopBuy;
+	/* Cash Shop Sale [Smokexyz/Hercules] */
+	clif->pCashShopSaleOpen = clif_parse_CashShopSaleOpen;
+	clif->pCashShopSaleClose = clif_parse_CashShopSaleClose;
+	clif->pCashShopSaleAdd = clif_parse_CashShopSaleAdd;
+	clif->pCashShopSaleRemove = clif_parse_CashShopSaleRemove;
+	clif->pCashShopSaleSearch = clif_parse_CashShopSaleSearch;
+	clif->pCashShopSaleRefresh = clif_parse_CashShopSaleRefresh;
 	/*  */
 	clif->pPartyTick = clif_parse_PartyTick;
 	clif->pGuildInvite2 = clif_parse_GuildInvite2;

@@ -2689,6 +2689,20 @@ packet(0x96e,-1,clif->ackmergeitems);
 	packet(0x0436,4,clif->pDull); // CZ_GANGSI_RANK
 	packet(0x09df,7);
 	packet(0x09cb,17);
+
+// Sale
+	packet(0x09ac,-1,clif->pCashShopSaleSearch,2,4,8);
+	packet(0x09ad,8);
+	packet(0x09ae,17,clif->pCashShopSaleAdd,2,6,8,12,16);
+	packet(0x09af,4);
+	packet(0x09b0,8,clif->pCashShopSaleRemove,2,6);
+	packet(0x09b1,4);
+	packet(0x09b2,8);
+	packet(0x09b3,4);
+	packet(0x09b4,6,clif->pCashShopSaleOpen,2);
+	packet(0x09bc,6,clif->pCashShopSaleClose,2);
+	packet(0x09c3,8,clif->pCashShopSaleRefresh,2,6);
+	packet(0x09c4,8);
 #endif
 
 // 2013-12-30aRagexe - Yommy
