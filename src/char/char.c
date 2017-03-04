@@ -1229,7 +1229,7 @@ int char_mmo_char_fromsql(int char_id, struct mmo_charstatus* p, bool load_every
 		SqlStmt_ShowDebug(stmt);
 	
 	for (i = 0; i < MAX_SLOTS; ++i)
-		if( SQL_ERROR == SQL->StmtBindColumn(stmt, 11 + i, SQLDT_SHORT, &tmp_item.card[i], 0, NULL, NULL) )
+		if (SQL_ERROR == SQL->StmtBindColumn(stmt, 11 + i, SQLDT_SHORT, &tmp_item.card[i], 0, NULL, NULL))
 			SqlStmt_ShowDebug(stmt);
 	
 	for (i = 0; i < MAX_ITEM_OPTIONS; i++)

@@ -31,6 +31,7 @@
 //= A list of the first 10 options are provided in this npc.
 //================= Current Version =======================================
 //= 1.0
+//=========================================================================
 
 prontera,153,180,4	script	Option Master	4_DOG01,{
 	callsub(StartTalking);
@@ -58,37 +59,37 @@ OnInit:
 	.enable_random_bonus = false;
 	
 	/* Item Option Descriptions */
-	setarray .options$[0],"Max HP", "Max SP", "STR", "AGI", "VIT", "INT", "DEX", "LUK";
+	setarray(.options$[0], "Max HP", "Max SP", "STR", "AGI", "VIT", "INT", "DEX", "LUK");
 	/* Item Option Constants */
-	setarray .option_constants[0], VAR_MAXHPAMOUNT, VAR_MAXSPAMOUNT, VAR_STRAMOUNT, VAR_AGIAMOUNT, VAR_VITAMOUNT, VAR_INTAMOUNT, VAR_DEXAMOUNT, VAR_LUKAMOUNT;
+	setarray(.option_constants[0], VAR_MAXHPAMOUNT, VAR_MAXSPAMOUNT, VAR_STRAMOUNT, VAR_AGIAMOUNT, VAR_VITAMOUNT, VAR_INTAMOUNT, VAR_DEXAMOUNT, VAR_LUKAMOUNT);
 	end;
 	
 StartTalking:
-	.@name$ = "[ ^990099Option Master^000000 ]";
-	disable_items;
+	.@name$ = _("[ ^990099Option Master^000000 ]");
+	disable_items();
 	mes(.@name$);
-	mesf("Hey there %s",strcharinfo(0));
+	mesf("Hey there %s", strcharinfo(PC_NAME));
 	mes("There's a new-found method of adding options to an equipment that I have been working on.");
-	next;
+	next();
 	if (.enable_random_bonus) {
 		mes(.@name$);
 		mes("Equipment bonuses are added randomly per slot!");
 		mes("So if you wind up with a low amount of bonus, don't hesitate to override the slot.");
-		next;
+		next();
 	}
 	mes(.@name$);
 	mes("Would you like me to add extra stats to your equipment?");
-	next;
+	next();
 	if (select("Of course!", "Meh, not right now.") == 2) {
 		mes(.@name$);
 		mes("Alright then, catch you later.");
-		close;
+		close();
 	}
 	// Build the Menu.
-	setarray .@position$[1],"Head","Body","Left Hand","Right Hand","Robe","Shoes","Accessory 1","Accessory 2","Head 2","Head 3";
+	setarray(.@position$[1], "Head", "Body", "Left Hand", "Right Hand", "Robe", "Shoes", "Accessory 1", "Accessory 2", "Head 2", "Head 3");
 	.@menu$ = "";
-	for (.@i = 1; .@i<=10; ++.@i)
-		.@menu$ += ((getequipisequiped(.@i))?getequipname(.@i):.@position$[.@i]+"-[Not equipped]")+":";
+	for (.@i = 1; .@i <= 10; ++.@i)
+		.@menu$ += ((getequipisequiped(.@i)) ? getequipname(.@i) : .@position$[.@i] + "-[Not equipped]") + ":";
 	// Select the part.
 	.@equip_index = select(.@menu$);
 	
@@ -96,17 +97,17 @@ StartTalking:
 	if (!getequipisequiped(.@equip_index)) {
 		mes(.@name$);
 		mes("Brah, your item ain't equipped.");
-		close;
+		close();
 	// Check if it allows options
 	} else if (!getequipisenableopt(.@equip_index)) {
 		mes(.@name$);
 		mes("Brah, this equip can't have options.");
-		close;
+		close();
 	// Check if equipment is identified.
 	} else if (!getequipisidentify(.@equip_index)) {
 		mes(.@name$);
 		mes("Brah, this equip ain't identified.");
-		close;
+		close();
 	}
 	
 	// Present a list of currently infused options.
@@ -114,16 +115,16 @@ StartTalking:
 		.@menu$ = "";
 		.@used = false;
 		// Build the menu of current options.
-		for (.@i = 1; .@i <= MAX_ITEM_OPTIONS; .@i++) {
+		for (.@i = 1; .@i <= MAX_ITEM_OPTIONS; ++.@i) {
 			// call getequipoption(<equip_index>, <type>, <slot>);
 			// if the return is <0, it's a script error.
 			// if the return is 0, the slot is empty.
 			// if the return is >0, the slot is unavailable.
 			.@opt = getequipoption(.@equip_index, .@i, IT_OPT_INDEX);
 			if (.@opt > 0)
-				.@menu$ += (.@i)+") "+.options$[.@opt-1]+":";
+				.@menu$ += (.@i) + ") " + .options$[.@opt - 1] + ":";
 			else
-				.@menu$ += (.@i)+") ^999999Empty^000000"+":";
+				.@menu$ += (.@i) + ") ^999999Empty^000000" + ":";
 		}
 		// Option Slot is the actual option slot 0-MAX_ITEM_OPTIONS (@see mmo.h)
 		.@option_slot = select(.@menu$);
@@ -132,29 +133,29 @@ StartTalking:
 		if (getequipoption(.@equip_index, .@option_slot, IT_OPT_INDEX) > 0) {
 			mes(.@name$);
 			mes("This slot is already used up!");
-			if(select("^990000Override the slot.^000000", "Choose again.") == 2)
+			if (select("^990000Override the slot.^000000", "Choose again.") == 2)
 				.@used = true;
-			next;
+			next();
 		}
 	} while (.@used); // loop if the slot is not to be overridden
 	
 	// Present a list of available bonuses.
 	mes(.@name$);
 	mes("Which of the following item bonuses would you like to add to this item?");
-	next;
+	next();
 	// Build the Options!
 	.@menu$ = "";
-	for (.@i = 0; .@i < getarraysize(.options$); .@i++)
-		.@menu$ += (.@i+1)+") "+.options$[.@i]+":";
+	for (.@i = 0; .@i < getarraysize(.options$); ++.@i)
+		.@menu$ += (.@i + 1) + ") " + .options$[.@i] + ":";
 		
 	do {
 		// Select the options!
 		.@option_variable = select(.@menu$);
-		next;
+		next();
 		mes(.@name$);
-		mesf("You chose ^009900%s^000000!",.options$[.@option_variable-1]);
+		mesf("You chose ^009900%s^000000!", .options$[.@option_variable - 1]);
 		mes("Are you sure?");
-		next;
+		next();
 	} while (select("Fo Shizzle.", "I'ma re-evaluate, brah.") == 2);
 	
 	// Select a bonus or randomise.
@@ -163,10 +164,10 @@ StartTalking:
 	} else {
 		do {
 			mes(.@name$);
-			mesf("Please input the bonus amount of ^009900%s^000000 you want to add!",.options$[.@option_variable-1]);
-			mesf("(Min: %d, Max: %d)",.minimum_bonus_amount,.maximum_bonus_amount);
-			.@ok = input(.@value,.minimum_bonus_amount,.maximum_bonus_amount);
-			next;
+			mesf("Please input the bonus amount of ^009900%s^000000 you want to add!", .options$[.@option_variable - 1]);
+			mesf("(Min: %d, Max: %d)", .minimum_bonus_amount, .maximum_bonus_amount);
+			.@ok = input(.@value, .minimum_bonus_amount, .maximum_bonus_amount);
+			next();
 		} while (.@ok);
 	}
 	
@@ -175,37 +176,37 @@ StartTalking:
 		mes(.@name$);
 		mes("Alright so,");
 		mes("I'll have you know...");
-		mesf("There's a ^990000%d%% chance of failure^000000.",.chance_of_failure);
+		mesf("There's a ^990000%d%% chance of failure^000000.", .chance_of_failure);
 		mes("Because, well... I didn't go to school.");
-		next;
+		next();
 		mes(.@name$);
 		if (.delete_on_failure) {
 			mes("If I fail, your item will break and it ^990000will be destroyed^000000!");
 		}
 		mes("Are you still ready to go forward with this?");
-		next;
+		next();
 		if (select("Fo shizzle.", "Hells naw, go back to school.") == 2) {
 			mes(.@name$);
 			mes("Geez, you don't have to be so harsh about it.");
-			close;
+			close();
 		}
-		next;
+		next();
 	}
 	
 	// If there's a Zeny Requirement, perform the usual.
 	if (.zeny_requirement > 0) {
 		mes(.@name$);
-		mesf("You also have to pay %dZ.",.zeny_requirement);
-		next;
+		mesf("You also have to pay %dZ.", .zeny_requirement);
+		next();
 		if (select("Of course!", "No way!") == 2) {
 			mes(.@name$);
 			mes("Well, see you around then...");
-			close;
+			close();
 		}
 		if (Zeny < .zeny_requirement) {
 			mes(.@name$);
 			mes("You don't have enough Zeny!");
-			close;
+			close();
 		}
 		Zeny -= .zeny_requirement;
 	}
@@ -220,14 +221,14 @@ StartTalking:
 			failedrefitem(.@equip_index); // Simulate failed refinement of the item and delete.
 	} else {
 		// Set the Item Option bonuses in the slot see db/item_options.conf for more info.
-		setequipoption(.@equip_index, .@option_slot, .option_constants[.@option_variable-1], .@value);
+		setequipoption(.@equip_index, .@option_slot, .option_constants[.@option_variable - 1], .@value);
 		mes(.@name$);
 		mes("^009900Praise Jesus^000000");
 		mes("I have added an option to your item.");
 		mes("My skills are flawless!");
 	}
-	next;
+	next();
 	mes(.@name$);
 	mes("See you around!");
-	close;
+	close();
 }

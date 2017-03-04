@@ -2394,18 +2394,18 @@ unsigned int clif_add_random_options(struct ItemOptions *buf, struct item *it)
 	// Append the buffer with existing options first.
 	for (i = 0; i < MAX_ITEM_OPTIONS; i++) {
 		if (it->option[i].index) {
-			WBUFW(buf, j*5+0) = it->option[i].index; // OptIndex
-			WBUFW(buf, j*5+2) = it->option[i].value; // Value
-			WBUFB(buf, j*5+4) = it->option[i].param; // Param1
+			WBUFW(buf, j * 5 + 0) = it->option[i].index; // OptIndex
+			WBUFW(buf, j * 5 + 2) = it->option[i].value; // Value
+			WBUFB(buf, j * 5 + 4) = it->option[i].param; // Param1
 			total_options++;
 			j++;
 		}
 	}
 	// Append the remaining buffer with no values;
 	for (; j < MAX_ITEM_OPTIONS || j < 5; j++) {
-		WBUFW(buf, j*5+0) = 0;
-		WBUFW(buf, j*5+2) = 0;
-		WBUFB(buf, j*5+4) = 0;
+		WBUFW(buf, j * 5 + 0) = 0;
+		WBUFW(buf, j * 5 + 2) = 0;
+		WBUFB(buf, j * 5 + 4) = 0;
 	}
 	
 	return total_options;

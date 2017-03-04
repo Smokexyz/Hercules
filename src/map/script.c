@@ -9028,7 +9028,7 @@ BUILDIN(getequipisenableref)
  */
 BUILDIN(getequipisenableopt)
 {
-	int i = -1, index = script_getnum(st,2);
+	int i = -1, index = script_getnum(st, 2);
 	struct map_session_data *sd = script->rid2sd(st);
 	
 	if (sd == NULL) {
@@ -9038,7 +9038,7 @@ BUILDIN(getequipisenableopt)
 	}
 	
 	if (index > 0 && index <= ARRAYLENGTH(script->equip))
-		i = pc->checkequip(sd, script->equip[index-1]);
+		i = pc->checkequip(sd, script->equip[index - 1]);
 	
 	if (i >=0 && sd->inventory_data[i] && !sd->inventory_data[i]->flag.no_options && !sd->status.inventory[i].expire_time)
 		script_pushint(st, 1);
@@ -13645,7 +13645,7 @@ BUILDIN(getequipoption)
 		ShowError("buildin_getequipoptioninfo: Invalid option slot %d (Min: 1, Max: %d) provided.\n", slot, MAX_ITEM_OPTIONS);
 		return false;
 	} else if (equip_index > 0 && equip_index <= ARRAYLENGTH(script->equip)) {
-		i = pc->checkequip(sd,script->equip[equip_index-1]);
+		i = pc->checkequip(sd, script->equip[equip_index - 1]);
 	}
 	
 	if (i >= 0 && sd->status.inventory[i].nameid) {
@@ -13704,7 +13704,7 @@ BUILDIN(setequipoption)
 		ShowError("buildin_setequipoption: Invalid option index %d (Min: 1, Max: %d) provided.\n", slot, MAX_ITEM_OPTIONS);
 		return false;
 	} else if (equip_index > 0 && equip_index <= ARRAYLENGTH(script->equip)) {
-		i = pc->checkequip(sd,script->equip[equip_index-1]);
+		i = pc->checkequip(sd, script->equip[equip_index - 1]);
 	}
 	
 	if (i >= 0 && sd->status.inventory[i].nameid) {
@@ -13927,12 +13927,12 @@ BUILDIN(getinventorylist)
 				pc->setreg(sd,reference_uid(script->add_str(card_var), j),sd->status.inventory[i].card[k]);
 			}
 			for (k = 0; k < MAX_ITEM_OPTIONS; k++) {
-				sprintf(card_var, "@inventorylist_opt_id%d",k+1);
-				pc->setreg(sd,reference_uid(script->add_str(card_var), j),sd->status.inventory[i].option[k].index);
-				sprintf(card_var, "@inventorylist_opt_val%d",k+1);
-				pc->setreg(sd,reference_uid(script->add_str(card_var), j),sd->status.inventory[i].option[k].value);
-				sprintf(card_var, "@inventorylist_opt_param%d",k+1);
-				pc->setreg(sd,reference_uid(script->add_str(card_var), j),sd->status.inventory[i].option[k].param);
+				sprintf(card_var, "@inventorylist_opt_id%d", k + 1);
+				pc->setreg(sd, reference_uid(script->add_str(card_var), j), sd->status.inventory[i].option[k].index);
+				sprintf(card_var, "@inventorylist_opt_val%d", k + 1);
+				pc->setreg(sd, reference_uid(script->add_str(card_var), j), sd->status.inventory[i].option[k].value);
+				sprintf(card_var, "@inventorylist_opt_param%d", k + 1);
+				pc->setreg(sd, reference_uid(script->add_str(card_var), j), sd->status.inventory[i].option[k].param);
 			}
 			pc->setreg(sd,reference_uid(script->add_str("@inventorylist_expire"), j),sd->status.inventory[i].expire_time);
 			pc->setreg(sd,reference_uid(script->add_str("@inventorylist_bound"), j),sd->status.inventory[i].bound);
@@ -13964,12 +13964,12 @@ BUILDIN(getcartinventorylist)
 				pc->setreg(sd,reference_uid(script->add_str(card_var), j),sd->status.cart[i].card[k]);
 			}
 			for (k = 0; k < MAX_ITEM_OPTIONS; k++) {
-				sprintf(card_var, "@cartinventorylist_opt_id%d",k+1);
-				pc->setreg(sd,reference_uid(script->add_str(card_var), j),sd->status.cart[i].option[k].index);
-				sprintf(card_var, "@cartinventorylist_opt_val%d",k+1);
-				pc->setreg(sd,reference_uid(script->add_str(card_var), j),sd->status.cart[i].option[k].value);
-				sprintf(card_var, "@cartinventorylist_opt_param%d",k+1);
-				pc->setreg(sd,reference_uid(script->add_str(card_var), j),sd->status.cart[i].option[k].param);
+				sprintf(card_var, "@cartinventorylist_opt_id%d", k + 1);
+				pc->setreg(sd, reference_uid(script->add_str(card_var), j), sd->status.cart[i].option[k].index);
+				sprintf(card_var, "@cartinventorylist_opt_val%d", k + 1);
+				pc->setreg(sd, reference_uid(script->add_str(card_var), j), sd->status.cart[i].option[k].value);
+				sprintf(card_var, "@cartinventorylist_opt_param%d", k + 1);
+				pc->setreg(sd, reference_uid(script->add_str(card_var), j), sd->status.cart[i].option[k].param);
 			}
 			pc->setreg(sd,reference_uid(script->add_str("@cartinventorylist_expire"), j),sd->status.cart[i].expire_time);
 			pc->setreg(sd,reference_uid(script->add_str("@cartinventorylist_bound"), j),sd->status.cart[i].bound);
